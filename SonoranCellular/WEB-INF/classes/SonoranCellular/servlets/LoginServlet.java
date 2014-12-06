@@ -15,8 +15,45 @@ public class LoginServlet extends HttpServlet
         super();
     }
 
-    OracleConnect oc = new OracleConnect();
+    private OracleConnect oc = new OracleConnect();
+    private Statement s;
+    private Connection c;
+    
+    /**
+     * Connect to the database and setup instance variables.
+     */
+    public void init() {
+    	String user_name = OracleConnect.user_name;
+		String password = OracleConnect.password;
+		String connect_string = OracleConnect.connect_string;
+		
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			c = DriverManager.getConnection(connect_string,user_name,password);
+		
+			if (c == null) throw new Exception("Connection to database failed.");
 
+			s = c.createStatement();
+			
+			if (s == null) throw new Exception("Statement creation fialed.");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		System.out.println("Connection to database successful");
+    }
+    
+    public void destroy() {
+    	try {
+		c.commit();
+		c.close();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
     public void drawHeader(HttpServletRequest req, PrintWriter out)
     {
         out.println("<html>");
@@ -50,11 +87,11 @@ public class LoginServlet extends HttpServlet
 
         out.println("<br>");
 
-	out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
+        out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
         out.println("<input type=submit name=\"AddPlan\" value=\"Add a Plan\">");
         out.println("</form>");
-
-	out.println("<br>");
+        
+        out.println("<br>");
 
         out.println("<form name=\"FindBill\" action=FindBill method=get>");
         out.println("<input type=submit name=\"FindBill\" value=\"Print Bill for a billing period\">");
@@ -135,6 +172,7 @@ public class LoginServlet extends HttpServlet
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
     {
+    	System.out.println("Doing get for LoginServlet.");
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
 
