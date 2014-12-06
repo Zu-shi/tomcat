@@ -1,0 +1,7 @@
+DROP TABLE Subscribe;
+DROP TABLE Plan;
+DROP TABLE Phone;
+DROP TABLE Owns;
+DROP TABLE Item;
+DROP TABLE Bill;
+DROP TABLE Account;
