@@ -15,7 +15,45 @@ public class AddPlan extends HttpServlet
       super();
    }
 
-
+    private OracleConnect oc = new OracleConnect();
+    private Statement s;
+    private Connection c;
+    
+    /**
+     * Connect to the database and setup instance variables.
+     */
+    public void init() {
+    	String user_name = OracleConnect.user_name;
+		String password = OracleConnect.password;
+		String connect_string = OracleConnect.connect_string;
+        
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			c = DriverManager.getConnection(connect_string,user_name,password);
+            
+			if (c == null) throw new Exception("Connection to database failed.");
+            
+			s = c.createStatement();
+			
+			if (s == null) throw new Exception("Statement creation fialed.");
+            
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		System.out.println("HW8: Connection to database successful");
+    }
+    
+    public void destroy() {
+    	try {
+            c.commit();
+            c.close();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
    public void drawUpdateMessage(HttpServletRequest req, PrintWriter out)
    {
       String plan_name  = "CS460";
@@ -141,20 +179,59 @@ public class AddPlan extends HttpServlet
 
    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
    {
-      res.setContentType("text/html");
-      PrintWriter out = res.getWriter();
+       
+       System.out.println("HW8: Doing get for AddPlan.");
+       res.setContentType("text/html");
+       PrintWriter out = res.getWriter();
+       
+       String planName = "";
+       int imei = 0;
+       String mobilenumber = "";
+       String model = "";
+       
+       
+       try{
+           String[] params = req.getParameterValues("planname");
+           planName = params[0];
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       
+       try{
+           String[] params = req.getParameterValues("imei");
+           imei = Integer.parseInt(params[0]);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       
+       try{
+           String[] params = req.getParameterValues("mobilenumber");
+           mobilenumber = params[0];
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       
+       try{
+           String[] params = req.getParameterValues("account");
+           model = params[0];
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       
+       res.setContentType("text/html");
+       PrintWriter out = res.getWriter();
 
-      drawHeader(req,out);
+       drawHeader(req,out);
 
-      if(req.getParameter("Submit") == null)
-      {
-         drawAddPlanInformationMenu(req,out);
-      }
-      else
-      {
-         drawUpdateMessage(req,out);
-      }
+       if(req.getParameter("Submit") == null)
+       {
+          drawAddPlanInformationMenu(req,out);
+       }
+       else
+       {
+          drawUpdateMessage(req,out);
+       }
 
-      drawFooter(req,out);
+       drawFooter(req,out);
    }
 }
