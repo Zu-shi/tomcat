@@ -1,11 +1,14 @@
 package SonoranCellular.servlets;
 import java.util.*;
-
 import java.io.*;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
+
 import java.sql.*;
+
 import SonoranCellular.servlets.*;
+import SonoranCellular.utils.OracleConnect;
 
 
 public class AddAccountInformation extends HttpServlet
@@ -14,16 +17,142 @@ public class AddAccountInformation extends HttpServlet
    {
       super();
    }
+   
+   private OracleConnect oc = new OracleConnect();
+   private Statement s;
+   private Connection c;
+   
+   /**
+    * Connect to the database and setup instance variables.
+    */
+   public void init() {
+   	String user_name = OracleConnect.user_name;
+		String password = OracleConnect.password;
+		String connect_string = OracleConnect.connect_string;
+		
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			c = DriverManager.getConnection(connect_string,user_name,password);
+		
+			if (c == null) throw new Exception("Connection to database failed.");
 
+			s = c.createStatement();
+			
+			if (s == null) throw new Exception("Statement creation fialed.");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		System.out.println("HW8: Connection to database successful");
+   }
+   
+   public void destroy() {
+   	try {
+		c.commit();
+		c.close();
+   	} catch (Exception e) {
+   		e.printStackTrace();
+   	}
+   }
 
-   public void drawUpdateMessage(HttpServletRequest req, PrintWriter out)
+   public void updateMessage(HttpServletRequest req, PrintWriter out) {
+	   String accountname = "";
+	   int accountnum = 0;
+	   
+	   try{
+		   accountname = req.getParameterValues("accountname")[0];
+		   if(accountname == null || accountname.length() == 0)
+			   throw new Exception("No account name supplied.");
+	   }
+	   catch (Exception e) {
+		   drawUpdateFailOnName(out);
+		   return;
+	   }
+	   
+	   try{
+		   accountnum = Integer.parseInt(req.getParameterValues("accountnum")[0]);
+	   }
+	   catch (Exception e) {
+		   drawUpdateFailOnNumber(out);
+		   return;
+	   }
+	   
+	   try{
+		   ResultSet rs = s.executeQuery("SELECT * FROM Account WHERE "
+		   		+ "AccountNumber = " + accountnum);
+		   if(rs.next())
+			   drawUpdateFailOnNumberExists(out, accountnum);
+		   else
+			   drawUpdateMessage(accountname, accountnum, out);
+		   
+		   return;
+	   } catch (Exception e) {
+		   e.printStackTrace();
+		   drawUpdateFailOnSQLError(out);
+	   }
+
+   }
+   
+   public void drawUpdateFailOnSQLError(PrintWriter out) {
+	   out.println("<font size=5 face=\"Arial,Helvetica\">");
+       out.println("<b>Internal Error: Please try again.</b></br>");
+
+       out.println("<hr");
+       out.println("<br><br>");
+
+       out.println("<form name=\"logout\" action=index.html>");
+       out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+       out.println("</form>");
+
+       out.println("<br>");
+   }
+   
+   public void drawUpdateFailOnNumberExists(PrintWriter out, int account) {
+	   out.println("<font size=5 face=\"Arial,Helvetica\">");
+       out.println("<b>Error: Account number \'" + account + "\' already exists.</b></br>");
+
+       out.println("<hr");
+       out.println("<br><br>");
+
+       out.println("<form name=\"logout\" action=index.html>");
+       out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+       out.println("</form>");
+
+       out.println("<br>");
+   }
+   
+   public void drawUpdateFailOnNumber(PrintWriter out) {
+	   out.println("<font size=5 face=\"Arial,Helvetica\">");
+       out.println("<b>Error: You must enter a new account number to register.</b></br>");
+
+       out.println("<hr");
+       out.println("<br><br>");
+
+       out.println("<form name=\"logout\" action=index.html>");
+       out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+       out.println("</form>");
+
+       out.println("<br>");
+   }
+   
+   public void drawUpdateFailOnName(PrintWriter out) {
+	   out.println("<font size=5 face=\"Arial,Helvetica\">");
+       out.println("<b>Error: You must enter a name to register.</b></br>");
+
+       out.println("<hr");
+       out.println("<br><br>");
+
+       out.println("<form name=\"logout\" action=index.html>");
+       out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+       out.println("</form>");
+
+       out.println("<br>");
+   }
+
+   public void drawUpdateMessage(String accountname, int accountnum, PrintWriter out)
    {
-      String email = "thecapitaloficeland@yahoo.com";
-      String accountname = "John";
-      int accountnum = 12345;   
-      boolean isMember = true;
-      
-      out.println("<p><b>Email:</b>  " + email + "</p>");
       out.println("<p><b>Account Name:</b>  " + accountname + "</p>");
       out.println("<p><b>Account Number:</b>  " + accountnum + "</p>");
 
@@ -72,11 +201,6 @@ public class AddAccountInformation extends HttpServlet
    {
       out.println("<form name=\"AddAccountInformation\" action=AddAccountInformation method=get>");
       out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
-      out.println("<p>");
-      out.println("<b>Email Address:</b>");
-      out.println("<input type=text name=\"email\">");
-      out.println("<br>");
-      out.println("</p>");
 
       out.println("<p>");
       out.println("<b>Account Name: </b>");
@@ -125,7 +249,7 @@ public class AddAccountInformation extends HttpServlet
       }
       else
       {
-         drawUpdateMessage(req,out);
+         updateMessage(req,out);
       }
 
       drawFooter(req,out);
