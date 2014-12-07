@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import SonoranCellular.servlets.*;
 import SonoranCellular.utils.*;
+
 import java.sql.*;
 
 public class LoginServlet extends HttpServlet
@@ -42,7 +43,7 @@ public class LoginServlet extends HttpServlet
 			return;
 		}
 		
-		System.out.println("Connection to database successful");
+		System.out.println("HW8: Connection to database successful");
     }
     
     public void destroy() {
@@ -172,12 +173,41 @@ public class LoginServlet extends HttpServlet
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
     {
-    	System.out.println("Doing get for LoginServlet.");
+    	System.out.println("HW8: Doing get for LoginServlet.");
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
+        
+        int accountNumber = 0;
+        String ownerName = "";
 
-        //if login success, call the following function
-        drawLoginSuccess(req,out);
+        try{
+            String[] params = req.getParameterValues("account number");
+        	accountNumber = Integer.parseInt(params[0]);
+        	
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        
+        try{
+            String[] params = req.getParameterValues("account");
+            ownerName = params[0];
+        	
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        
+        try{
+        	ResultSet rs = s.executeQuery("SELECT * FROM Account WHERE " +
+        			"Name = \'" + ownerName + "\' AND " +
+        			"AccountNumber = " + accountNumber);
+        	if(rs.next())
+        		drawLoginSuccess(req, out);
+        	else
+        		drawLoginFail(req, out);
+        }
+        catch (Exception e) {
+        	e.printStackTrace();
+        }
 
         //if fail, call the following function
         //drawLoginFail(req,out);
