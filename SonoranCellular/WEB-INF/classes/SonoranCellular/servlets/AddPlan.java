@@ -6,15 +6,16 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import SonoranCellular.servlets.*;
+import SonoranCellular.utils.*;
 
 
 public class AddPlan extends HttpServlet
 {
-   public AddPlan()
-   {
-      super();
-   }
-
+    public AddPlan()
+    {
+        super();
+    }
+    
     private OracleConnect oc = new OracleConnect();
     private Statement s;
     private Connection c;
@@ -54,184 +55,273 @@ public class AddPlan extends HttpServlet
     	}
     }
     
-   public void drawUpdateMessage(HttpServletRequest req, PrintWriter out)
-   {
-      String plan_name  = "CS460";
-      int numb = 1234567;
-      int imei = 460;
-      String model = "iPhone";
-
-     
-      out.println("<p><b>Plan Name:</b>  " + plan_name + "</p>");
-      out.println("<p><b>Mobile Number:</b>  " + numb + "</p>");
-      out.println("<p><b>IMEI:</b>  " + imei + "</p>");
-      out.println("<p><b>Model:</b>  " + model + "</p>");
-
-      out.println("<br>");
-
-      out.println("<form name=\"MainMenu\" action=LoginServlet>");
-      out.println("<input type=submit name=\"MainMenu\" value=\"MainMenu\">");
-      out.println("</form>");
-
-      out.println("<br>");
-
-      out.println("<form name=\"logout\" action=index.html>");
-      out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
-      out.println("</form>");
-   }
-
-
-   public void drawHeader(HttpServletRequest req, PrintWriter out) {
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<title>Plan Addition</title>");
-      out.println("</head>");
-
-      out.println("<body>");
-      out.println("<p>");
-      out.println("<center>");
-      out.println("<font face=\"Arial, Helvetica, sans-serif\" >");
-      out.println("<font color=\"#000066\">");
-      out.println("<center>\n<font size=7><strong>SonoranCellular</strong></font></br>");
-      out.println("</center>\n<font size=4><hr color=\"#000066\">");
-      out.println("Add new plan </b><br></font>");
-      out.println("</font>");
-
-      out.println("<hr>");
-   }
-
-
-   public void drawFooter(HttpServletRequest req, PrintWriter out)
-   {
-      out.println("</center>");
-      out.println("</p>");
-      out.println("</body>");
-      out.println("</html>");
-   }
-
-
-   public void drawAddPlanInformationMenu(HttpServletRequest req, PrintWriter out)
-   {
-      out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
-      out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
-      out.println("<p>");
-      out.println("<b>Plan Name:</b>");
-      out.println("<input type=text name=\"planname\">");
-      out.println("<br>");
-      out.println("</p>");
-
-      out.println("<p>");
-      out.println("<b>IMEI: </b>");
-      out.println("<input type=text name=\"imei\">");
-      out.println("<br>");
-      out.println("</p>");
-
-      out.println("<p>");
-      out.println("<b>Mobile Number: </b>");
-      out.println("<input type=text name=\"mobilenumber\">");
-      out.println("<br>");
-      out.println("</p>");
-
-      out.println("<p>");
-      out.println("<b>Model: </b>");
-      out.println("<input type=text name=\"model\">");
-      out.println("<br>");
-      out.println("</p>");
-
-      out.println("<table>");
-      out.println("<tr>");
-      out.println("<td>");
-      out.println("<input type=submit name=\"Submit\" value=\"Insert\">&nbsp&nbsp");
-      out.println("</td>");
-      out.println("</tr>");
-
-      out.println("</form>");
-
-      out.println("<tr>");
-      out.println("<td>");
-      out.println("<form name=\"Cancel\" action=AddPlan method=get>");
-      out.println("<input type=submit name=\"Cancel\" value=\"Cancel\">&nbsp&nbsp");
-      out.println("</form>");
-      out.println("</td>");
-      out.println("</tr>");
-
-      out.println("<tr>");
-      out.println("<td>");
-      out.println("<form name=\"MainMenu\" action=LoginServlet>");
-      out.println("<input type=submit name=\"MainMenu\" value=\"Return to Main Menu\">");
-      out.println("</form>");
-      out.println("</td>");
-      out.println("</tr>");
-
-      out.println("<tr>");
-      out.println("<td>");
-      out.println("<form name=\"logout\" action=index.html>");
-      out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
-      out.println("</form>");
-      out.println("</p>");
-      out.println("</td>");
-      out.println("</tr>");
-
-      out.println("</table>");
-      out.println("<br><br><br>");
-   }
-
-
-   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-   {
-       
-       System.out.println("HW8: Doing get for AddPlan.");
-       res.setContentType("text/html");
-       PrintWriter out = res.getWriter();
-       
-       String planName = "";
-       int imei = 0;
-       String mobilenumber = "";
-       String model = "";
-       
-       
-       try{
-           String[] params = req.getParameterValues("planname");
-           planName = params[0];
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-       
-       try{
-           String[] params = req.getParameterValues("imei");
-           imei = Integer.parseInt(params[0]);
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-       
-       try{
-           String[] params = req.getParameterValues("mobilenumber");
-           mobilenumber = params[0];
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-       
-       try{
-           String[] params = req.getParameterValues("account");
-           model = params[0];
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-       
-       res.setContentType("text/html");
-       PrintWriter out = res.getWriter();
-
-       drawHeader(req,out);
-
-       if(req.getParameter("Submit") == null)
-       {
-          drawAddPlanInformationMenu(req,out);
-       }
-       else
-       {
-          drawUpdateMessage(req,out);
-       }
-
-       drawFooter(req,out);
-   }
+    public void drawUpdateMessage(HttpServletRequest req, PrintWriter out, String plan_name, int accountNumber, int imei, String model)
+    {
+        drawHeader(req,out);
+        out.println("<p><b>Plan Name:</b>  " + plan_name + "</p>");
+        out.println("<p><b>Mobile Number:</b>  " + accountNumber + "</p>");
+        out.println("<p><b>IMEI:</b>  " + imei + "</p>");
+        out.println("<p><b>Model:</b>  " + model + "</p>");
+        
+        out.println("<br>");
+        
+        out.println("<form name=\"MainMenu\" action=LoginServlet>");
+        out.println("<input type=submit name=\"MainMenu\" value=\"MainMenu\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
+        out.println("</form>");
+        drawFooter(req,out);
+    }
+    
+    
+    public void drawHeader(HttpServletRequest req, PrintWriter out) {
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Plan Addition</title>");
+        out.println("</head>");
+        
+        out.println("<body>");
+        out.println("<p>");
+        out.println("<center>");
+        out.println("<font face=\"Arial, Helvetica, sans-serif\" >");
+        out.println("<font color=\"#000066\">");
+        out.println("<center>\n<font size=7><strong>SonoranCellular</strong></font></br>");
+        out.println("</center>\n<font size=4><hr color=\"#000066\">");
+        out.println("Add new plan </b><br></font>");
+        out.println("</font>");
+        
+        out.println("<hr>");
+    }
+    
+    
+    public void drawFooter(HttpServletRequest req, PrintWriter out)
+    {
+        out.println("</center>");
+        out.println("</p>");
+        out.println("</body>");
+        out.println("</html>");
+    }
+    
+    
+    public void drawAddPlanInformationMenu(HttpServletRequest req, PrintWriter out)
+    {
+        out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
+        out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
+        out.println("<p>");
+        out.println("<b>Plan Name:</b>");
+        out.println("<input type=text name=\"planname\">");
+        out.println("<br>");
+        out.println("</p>");
+        
+        out.println("<p>");
+        out.println("<b>IMEI: </b>");
+        out.println("<input type=text name=\"imei\">");
+        out.println("<br>");
+        out.println("</p>");
+        
+        out.println("<p>");
+        out.println("<b>Mobile Number: </b>");
+        out.println("<input type=text name=\"mobilenumber\">");
+        out.println("<br>");
+        out.println("</p>");
+        
+        out.println("<p>");
+        out.println("<b>Model: </b>");
+        out.println("<input type=text name=\"model\">");
+        out.println("<br>");
+        out.println("</p>");
+        
+        out.println("<table>");
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<input type=submit name=\"Submit\" value=\"Insert\">&nbsp&nbsp");
+        out.println("</td>");
+        out.println("</tr>");
+        
+        out.println("</form>");
+        
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<form name=\"Cancel\" action=AddPlan method=get>");
+        out.println("<input type=submit name=\"Cancel\" value=\"Cancel\">&nbsp&nbsp");
+        out.println("</form>");
+        out.println("</td>");
+        out.println("</tr>");
+        
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<form name=\"MainMenu\" action=LoginServlet>");
+        out.println("<input type=submit name=\"MainMenu\" value=\"Return to Main Menu\">");
+        out.println("</form>");
+        out.println("</td>");
+        out.println("</tr>");
+        
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
+        out.println("</form>");
+        out.println("</p>");
+        out.println("</td>");
+        out.println("</tr>");
+        
+        out.println("</table>");
+        out.println("<br><br><br>");
+    }
+    
+    public void drawCannotFindPlan(HttpServletRequest req, PrintWriter out){
+        drawHeader(req,out);
+        out.println("<font size=5 face=\"Arial,Helvetica\">");
+        out.println("<b>Error: cannot find corresponding plan.</b></br>");
+        
+        out.println("<hr");
+        out.println("<br><br>");
+        
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        drawFooter(req,out);
+    }
+    
+    public void drawCannotFindPhone(HttpServletRequest req, PrintWriter out){
+        drawHeader(req,out);
+        out.println("<font size=5 face=\"Arial,Helvetica\">");
+        out.println("<b>Error: no matching phone found on record.</b></br>");
+        
+        out.println("<hr");
+        out.println("<br><br>");
+        
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        drawFooter(req,out);
+    }
+    
+    public void drawSubscriptionAlreadyExists(HttpServletRequest req, PrintWriter out){
+        drawHeader(req,out);
+        out.println("<font size=5 face=\"Arial,Helvetica\">");
+        out.println("<b>Error: subscription already exists.</b></br>");
+        
+        out.println("<hr");
+        out.println("<br><br>");
+        
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        drawFooter(req,out);
+    }
+    
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+    {
+        System.out.println("HW8: Doing get for AddPlan.");
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+        
+        String planName = "";
+        int imei = 0;
+        String mobilenumber = "";
+        String model = "";
+        int accountNumber = 0;
+        
+        try{
+            System.out.println("HW8: account number: " + (Integer)req.getSession().getAttribute("accountNumber"));
+            accountNumber = (Integer)req.getSession().getAttribute("accountNumber");
+        }catch (Exception e) {
+            System.out.println("HW8: account number pasing error.");
+            e.printStackTrace();
+        }
+        
+        if(req.getParameter("Submit") == null)
+        {
+            drawAddPlanInformationMenu(req, out);
+        }else{
+            try{
+                String[] params = req.getParameterValues("planname");
+                planName = params[0];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            try{
+                String[] params = req.getParameterValues("imei");
+                imei = Integer.parseInt(params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            try{
+                String[] params = req.getParameterValues("mobilenumber");
+                mobilenumber = params[0];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            try{
+                String[] params = req.getParameterValues("account");
+                model = params[0];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            try{
+                ResultSet rs;
+                String query;
+                
+                //Check plan exists
+                query = "SELECT * FROM Plan WHERE " +
+                "PlanName = \'" + planName;
+                System.out.println("HW8: " + query);
+                rs = s.executeQuery(query);
+                
+                if(rs.next()){
+                    //Check phone exists
+                    query ="SELECT * FROM Phone WHERE " +
+                    "MobileNumber = \'" + mobilenumber + "\' AND " +
+                    "IMEI = " + imei + " AND " +
+                    "Model = " + model;
+                    System.out.println("HW8: " + query);
+                    rs = s.executeQuery(query);
+                    
+                    if(rs.next()){
+                        //Check subscription does not exist
+                        query = "SELECT * FROM Subscription WHERE " +
+                        "MobileNumber = \'" + mobilenumber + "\' AND " +
+                        "IMEI = " + imei + " AND " +
+                        "Model = " + model + " AND " +
+                        "AccountNumber = " + accountNumber;
+                        System.out.println("HW8: " + query);
+                        rs = s.executeQuery(query);
+                        
+                        if(!rs.next()){
+                            query = "INSERT INTO Subscribe (IMEI, AccountNumber, PlanName) VALUES(" +    imei + ", " + accountNumber + ", '" + planName + "')";
+                            System.out.println("HW8: " + query);
+                            s.executeUpdate(query);
+                            drawUpdateMessage(req, out, planName, accountNumber, imei, model);
+                            
+                        }else{
+                            drawSubscriptionAlreadyExists(req, out);
+                        }
+                        
+                    }else{
+                        drawCannotFindPhone(req, out);
+                    }
+                }else{
+                    drawCannotFindPlan(req, out);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
