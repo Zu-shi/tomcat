@@ -78,51 +78,29 @@ public class AddPlan extends HttpServlet
     
     
     public void drawHeader(HttpServletRequest req, PrintWriter out) {
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Plan Addition</title>");
-        out.println("</head>");
-        
-        out.println("<body>");
-        out.println("<p>");
-        out.println("<center>");
-        out.println("<font face=\"Arial, Helvetica, sans-serif\" >");
-        out.println("<font color=\"#000066\">");
-        out.println("<center>\n<font size=7><strong>SonoranCellular</strong></font></br>");
-        out.println("</center>\n<font size=4><hr color=\"#000066\">");
-        out.println("Add new plan </b><br></font>");
-        out.println("</font>");
-        
-        out.println("<hr>");
+    	out.println("<html>");
+ 	   out.println("<head>");
+ 	   out.println("<title>Sonoran Cellular -- Add Plan</title>");
+ 	   out.println("<link href=\"layout.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">");
+ 	   out.println("</head>");
+ 	   out.println("<body>");
+ 	   out.println("<div id=\"wrapper\">");
+ 	   out.println("<h1>Sonoran Cellular</h1>");
+ 	   out.println("<hr>");
     }
     
     
     public void drawFooter(HttpServletRequest req, PrintWriter out)
     {
-        //out.println("<hr>");
-        out.println("<tr>");
-        out.println("<td>");
+        out.println("<hr>");
         out.println("<form name=\"MainMenu\" action=LoginServlet>");
         out.println("<input type=submit name=\"MainMenu\" value=\"Return to Main Menu\">");
         out.println("</form>");
-        out.println("</td>");
-        out.println("</tr>");
         
-        out.println("<tr>");
-        out.println("<td>");
         out.println("<form name=\"logout\" action=index.html>");
         out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
         
         out.println("</form>");
-        out.println("</p>");
-        out.println("</td>");
-        out.println("</tr>");
-        
-        out.println("</table>");
-        out.println("<br><br><br>");
-        
-        out.println("</center>");
-        out.println("</p>");
         out.println("</body>");
         out.println("</html>");
     }
@@ -138,88 +116,62 @@ public class AddPlan extends HttpServlet
     public void drawAddPlanPage(HttpServletRequest req, PrintWriter out){
         
         if(!plans.isEmpty()){
+        	out.println("<div id=\"loginContainer\">");
             out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
-            out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
-            out.println("<p>");
-            out.println("<b>Plan Name:</b>");
+            out.println("<label>Plan Name:</label>");
             out.println("<select name=\"planname\">");
             for(String s: plans){
                 out.println("<option value = \"" + s + "\">" + s + "</option>");
             }
             out.println("</select>");
-            out.println("<br>");
-            out.println("</p>");
             
-            out.println("<p>");
-            out.println("<b>IMEI: </b>");
+            out.println("<label>IMEI: </label>");
             out.println("<input type=text name=\"imei\">");
-            out.println("<br>");
-            out.println("</p>");
             
-            out.println("<p>");
-            out.println("<b>Mobile Number: </b>");
+            out.println("<label>Mobile Number: </label>");
             out.println("<input type=text name=\"mobilenumber\">");
-            out.println("<br>");
-            out.println("</p>");
             
-            out.println("<p>");
-            out.println("<b>Model: </b>");
+            out.println("<label>Model: </label>");
             out.println("<input type=text name=\"model\">");
-            out.println("<br>");
-            out.println("</p>");
             
-            out.println("<table>");
-            out.println("<tr>");
-            out.println("<td>");
             out.println("<input type=submit name=\"Submit\" value=\"Insert\">&nbsp&nbsp");
-            out.println("</td>");
-            out.println("</tr>");
             
             out.println("</form>");
             
-            out.println("<tr>");
-            out.println("<td>");
             out.println("<form name=\"Cancel\" action=AddPlan method=get>");
             out.println("<input type=submit name=\"Cancel\" value=\"Cancel\">&nbsp&nbsp");
             out.println("</form>");
-            out.println("</td>");
-            out.println("</tr>");
+            out.println("</div>");
         }else{
-            out.println("<font size=5 face=\"Arial,Helvetica\">");
-            out.println("<b>There are no availible plans at the moment, please contact your Database Administrator.</b></br>");
+            out.println("<h2>There are no availible plans at the moment, please contact your Database Administrator.<h2>");
         }
     }
     
     public void drawCannotFindPlan(HttpServletRequest req, PrintWriter out){
         drawHeader(req,out);
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: cannot find corresponding plan.</b></br>");
+        out.println("<h2>Error: cannot find corresponding plan.</h2>");
         
-        out.println("<br>");
         drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
     
     public void drawCannotFindPhone(HttpServletRequest req, PrintWriter out){
         drawHeader(req,out);
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: no matching phone found on record.</b></br>");
+        out.println("<h2>Error: no matching phone found on record.</h2>");
         drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
     
     public void drawPhoneAlreadySubscribed(HttpServletRequest req, PrintWriter out){
         drawHeader(req,out);
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: the indicated phone already has a subscription.</b></br>");
+        out.println("<h2>Error: the indicated phone already has a subscription.</h2>");
         drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
     
     public void drawParseError(HttpServletRequest req, PrintWriter out, String err){
         drawHeader(req,out);
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b> " + err + "</b></br>");
+        out.println("<h2> " + err + "</h2>");
         
         drawAddPlanPage(req,out);
         drawFooter(req,out);
