@@ -95,6 +95,8 @@ public class AddAccountInformation extends HttpServlet
 			   drawUpdateFailOnNumberExists(out, accountnum);
 		   else {
 			   s.executeQuery("INSERT INTO Account VALUES(" + accountnum + ", \'" + accountname + "\')");
+			   req.getSession().setAttribute("Username", accountname);
+			   req.getSession().setAttribute("AccountNumber", accountnum);
 			   drawUpdateMessage(accountname, accountnum, out);
 		   }
 		   

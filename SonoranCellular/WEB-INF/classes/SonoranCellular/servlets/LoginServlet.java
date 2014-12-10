@@ -59,25 +59,19 @@ public class LoginServlet extends HttpServlet
     {
         out.println("<html>");
         out.println("<head>");
-        out.println("<title>SonoranCellular logged in</title>");
+        out.println("<title>Sonoran Cellular -- Main Menu</title>");
+    	out.println("<link href=\"layout.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">");
         out.println("</head>");
 
         out.println("<body>");
-
-
-        out.println("<p>");
-        out.println("<center>");
-        out.println("<font size=7 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
-        out.println("<center>\n<strong>SonoranCellular</strong></br>");
-        out.println("</center>\n<hr color=\"#000066\">");
-        out.println("<br><br>");
-
+        out.println("<div id=\"wrapper\">");
+        out.println("<h1>SonoranCellular</h1>");
+		out.println("<hr>");
     }
 
     public void drawFooter(HttpServletRequest req, PrintWriter out)
     {
-        out.println("</center>");
-        out.println("</p>");
+    	out.println("</div>"); // Close id="wrapper"
         out.println("</body>");
         out.println("</html>");
     }
@@ -85,61 +79,64 @@ public class LoginServlet extends HttpServlet
 
     private void drawActiveOptions(HttpServletRequest req, PrintWriter out)
     {
-
-        out.println("<br>");
-
+        out.println("<h2>Main Menu</h2>");
+        
+    	out.println("<div class=\"menuButton\">");
         out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
         out.println("<input type=submit name=\"AddPlan\" value=\"Add a Plan\">");
         out.println("</form>");
-        
-        out.println("<br>");
+        out.println("</div>");
 
+    	out.println("<div class=\"menuButton\">");
         out.println("<form name=\"FindBill\" action=FindBill method=get>");
         out.println("<input type=submit name=\"FindBill\" value=\"Print Bill for a billing period\">");
         out.println("</form>");
+        out.println("</div>");
 
-        out.println("<br>");
-
+    	out.println("<div class=\"menuButton\">");
         out.println("<form name=\"PlanShare\" action=./JSP/SharedAssignment.jsp>");
         out.println("<input type=submit name=\"SharedAssignment\" value=\"Who is assigned to the same plan?\">");
         out.println("</form>");
+        out.println("</div>");
 
-        out.println("<br>");
+    	out.println("<div class=\"menuButton\">");
+        out.println("<form name=\"ViewDependents\" action=ViewDependents method=get>");
+        out.println("<input type=submit name=\"LogoutServlet\" value=\"View dependent accounts\">");
+        out.println("</form>");
+        out.println("</div>");
 
-        out.println("<form name=\"LogoutServlet\" action=LogoutServlet method=get>");
+    	out.println("<div class=\"menuButton\">");
+        out.println("<form name=\"AddMaster\" action=AddMaster method=get>");
+        out.println("<input type=submit name=\"LogoutServlet\" value=\"Make this a dependent account\">");
+        out.println("</form>");
+        out.println("</div>");
+
+    	out.println("<div class=\"menuButton\">");
+        out.println("<form class=\"toBottom\"name=\"LogoutServlet\" action=LogoutServlet method=get>");
         out.println("<input type=submit name=\"LogoutServlet\" value=\"Log out\">");
         out.println("</form>");
+        out.println("</div>");
     }
 
     private void drawFailOptionsNoAccountNumber(HttpServletRequest req, PrintWriter out)
     {
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: account number does not exist.</b></br>");
+        out.println("<h2>Error: account number does not exist.</h2>");
 
-        out.println("<hr");
-        out.println("<br><br>");
-
-        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<hr>");
+        out.println("<form class=\"toBottom\" name=\"logout\" action=index.html>");
         out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
         out.println("</form>");
-
-        out.println("<br>");
     }
 
 
     private void drawFailOptionsIncorrectAccountName(HttpServletRequest req, PrintWriter out)
     {
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: enter the correct account name.</b></br>");
+        out.println("<h2>Error: enter the correct account name.</h2>");
 
         out.println("<hr");
-        out.println("<br><br>");
-
-        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<form class=\"toBottom\"name=\"logout\" action=index.html>");
         out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
         out.println("</form>");
-
-        out.println("<br>");
     }
 
     public void drawLoginSuccess(HttpServletRequest req, PrintWriter out)
