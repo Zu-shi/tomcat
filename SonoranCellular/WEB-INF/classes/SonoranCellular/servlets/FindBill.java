@@ -144,13 +144,42 @@ public class FindBill extends HttpServlet
         String billperiod = req.getParameter("billperiod");
         
         out.println("<p><b>Bill for billing period " + duedate.substring(0, 10) + ":</b>");
+        out.println("<table border=\"1\">");
+        out.println("<tr>");
+        out.println("<td><b>Bill End Date</b></td>");
+        out.println("<td><b>Item Number</b></td>");
+        out.println("<td><b>Cost</b></td>");
+        out.println("<tr>");
         
+        double totalAmount = 0;
         for(Bill b : bills){
-            out.println("<p><b>---For bill ending at " + b.endDate.substring(0, 10) + "---</b>");
+            boolean first = true;
+            out.println("<td>" + b.endDate.substring(0, 10) + "</td>");
             for(Item i : b.items){
-                out.println("<p><b>Item number: " + i.itemNumber + " Amount: $" + i.amount + "</b>");
+                if(first){
+                    out.println("<td>" + i.itemNumber + "</td>");
+                    out.println("<td>$" + i.amount + "</td>");
+                    out.println("<tr>");
+                }else{
+                    out.println("<td> </td>");
+                    out.println("<td>" + i.itemNumber + "</td>");
+                    out.println("<td>$" + i.amount + "</td>");
+                    out.println("<tr>");
+                }
+                first = false;
+                totalAmount += Double.parseDouble(i.amount);
             }
+            
+            if(first){
+                out.println("<td>N/A</td>");
+                out.println("<td>N/A</td>");
+            }
+            out.println("<tr>");
         }
+        out.println("<td></td>");
+        out.println("<td><b>Total</b></td>");
+        out.println("<td>" + totalAmount + "</td>");
+        out.println("</table>");
         
         out.println("<form name=\"billSearch\" action=FindBill method=get>");
         out.println("Enter billing period: ");
