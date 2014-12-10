@@ -8,7 +8,8 @@
 <html>
 
 <head>
-<title>SonoranCellular</title>
+	<title>Sonoran Cellular -- Shared Assignments</title>
+	<link href="../layout.css" rel="stylesheet" type="text/css" media="all">
 </head>
 <body link=#f0f0ff alink vlink=#f0f0ff>
 	<%! Statement s1; %>
@@ -40,94 +41,53 @@
 		System.out.println("HW8: Connection to database successful");
 	}
 	%>
-	<p>
-	<center>
-		<font size=7 face="Arial, Helvetica, sans-serif" color="#000066">
-			<b>SonoranCellular</b><br>
-		</font>
-		<hr>
-		<br> <b>Accounts with the same plan:</b> <br>
-		<%
-			init();
-			ResultSet rs1 = s1.executeQuery("SELECT PlanName FROM Plan");
-			/*
-			String name1 = "Jean-Pierre";
-			String name2 = "Rick Snodgrass";
-			String plan1 = "normal";
-			String name3 = "Bill Gates";
-			String name4 = "Steve Jobs";
-			String plan2 = "unlimited";
-			*/
-		%>
-
-		<table border="1">
-			<tr>
-				<td><b> Plan Name </b></td>
-				<td><b> Customer </b></td>
-				<%
-				while (rs1.next()){
-					ResultSet rs2 = s2.executeQuery("SELECT Name FROM Account, Subscribe " +
-													"WHERE Account.AccountNumber = Subscribe.AccountNumber AND " +
-													"Subscribe.PlanName = \'" + rs1.getString(1) + "\'");
-					if(rs2.next()) {
+	
+	<div id="wrapper">
+	
+	<h1>SonoranCellular</h1>
+	<hr>
+	<h2>Accounts with the same plan</h2>
+	<%
+		init();
+		ResultSet rs1 = s1.executeQuery("SELECT PlanName FROM Plan");
+	%>
+	
+	<div id="tableContainer">
+	<table>
+		<tr>
+			<th>Plan Name</th>
+			<th>Customer</th>
+			<%
+			while (rs1.next()){
+				ResultSet rs2 = s2.executeQuery("SELECT Name FROM Account, Subscribe " +
+												"WHERE Account.AccountNumber = Subscribe.AccountNumber AND " +
+												"Subscribe.PlanName = \'" + rs1.getString(1) + "\'");
+				if(rs2.next()) {
+					out.println("<tr>");
+					out.println("<td> " + rs1.getString(1) + "</td>");
+					out.println("<td> " + rs2.getString(1) + "</td>");	
+					while(rs2.next()) {
 						out.println("<tr>");
-						out.println("<td> " + rs1.getString(1) + "</td>");
-						out.println("<td> " + rs2.getString(1) + "</td>");
-						
-						while(rs2.next()) {
-							out.println("<tr>");
-							out.println("<td> </td>");
-							out.println("<td> " + rs2.getString(1) + " </td>");
-						}
+						out.println("<td class=\"noTop\"> </td>");
+						out.println("<td> " + rs2.getString(1) + " </td>");
 					}
 				}
-				/*
-		  // Card 1
-		  out.println("<tr>");
-		  out.println("<td> " + plan1 + "</td>");
-		  out.println("<td> " + name1 + " </td>");
-
-		  out.println("<tr>");
-		  out.println("<td> </td>");
-		  out.println("<td> " + name2 + " </td>");
-
-		  // Card 2
-		  out.println("<tr>");
-		  out.println("<td> " + plan2 + "</td>");
-		  out.println("<td> " + name3 + " </td>");
-
-		  out.println("<tr>");
-		  out.println("<td> </td>");
-		  out.println("<td> " + name4 + " </td>");
-		  */
-		%>
+			}
+			%>
 			
-		</table>
+	</table>
+	</div>
+	
+	<hr>
+	<form name="mainmenu" action=../LoginServlet method=get>
+		<input type=submit name="MainMenu" value="Main Menu">
+	</form>
+	
+	<form name="logout" action=../LogoutServlet method=get>
+		<input type=submit name="logoutSonoranCellular" value="Logout">
+	</form>
 
-		<hr>
-		<br>
-		<br>
-
-		<table>
-			<tr>
-				<td>
-					<form name="mainmenu" action=../LoginServlet method=get>
-						<input type=submit name="MainMenu" value="Main Menu">
-					</form>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<form name="logout" action=../LogoutServlet method=get>
-						<input type=submit name="logoutSonoranCellular" value="Logout">
-					</form>
-				</td>
-			</tr>
-		</table>
-
-
-	</center>
-	</p>
+	</div>
 </body>
 </html>
 
