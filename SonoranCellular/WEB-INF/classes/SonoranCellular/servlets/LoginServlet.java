@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet
     	String user_name = OracleConnect.user_name;
 		String password = OracleConnect.password;
 		String connect_string = OracleConnect.connect_string;
-		
+
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			c = DriverManager.getConnection(connect_string,user_name,password);
