@@ -107,8 +107,8 @@ public class LoginServlet extends HttpServlet
 
         out.println("<br>");
 
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Log out\">");
+        out.println("<form name=\"LogoutServlet\" action=FindBill method=get>");
+        out.println("<input type=submit name=\"LogoutServlet\" value=\"Log out\">");
         out.println("</form>");
     }
 
@@ -165,11 +165,17 @@ public class LoginServlet extends HttpServlet
         drawFooter(req,out);
     }
 
-    public void drawLoginFail(HttpServletRequest req, PrintWriter out)
+    public void drawLoginFailOnNumber(HttpServletRequest req, PrintWriter out)
     {
         drawHeader(req,out);
-        drawFailOptions(req,out);
+        drawFailOptionsNoAccountNumber(req,out);
         drawFooter(req,out);
+    }
+    
+    public void drawLoginFailOnName(HttpServletRequest req, PrintWriter out) {
+    	drawHeader(req,out);
+    	drawFailOptionsIncorrectAccountName(req,out);
+    	drawFooter(req,out);
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
@@ -198,20 +204,30 @@ public class LoginServlet extends HttpServlet
         }
         
         try{
-            String query = "SELECT * FROM Account WHERE " +
-                "Name = \'" + ownerName + "\' AND " +
-                "AccountNumber = " + accountNumber;
-            System.out.println("HW8: " + query);
-        	ResultSet rs = s.executeQuery(query);
-            
-            req.getSession().setAttribute("accountNumber", accountNumber);
-        	if(rs.next()){
+        	// Is the user already logged in?
+        	if(req.getSession().getAttribute("Username") != null) {
         		drawLoginSuccess(req, out);
-                System.out.println("HW8: drawLoginSuccess");
-        	}else{
-        		drawLoginFail(req, out);
-                System.out.println("HW8: drawLoginFail");
-            }
+        		return;
+        	}
+        	
+        	ResultSet rs = s.executeQuery("SELECT * FROM Account WHERE " +
+        			"AccountNumber = " + accountNumber);
+        	if(!rs.next()) {
+        		drawLoginFailOnNumber(req, out);
+        		return;
+        	}
+        	
+        	rs = s.executeQuery("SELECT * FROM Account WHERE " +
+        			"AccountNumber = " + accountNumber + " AND " +
+        			"Name = \'" + ownerName + "\'");
+        	
+        	if(rs.next()) {
+        		req.getSession().setAttribute("Username", ownerName);
+        		req.getSession().setAttribute("AccountNumber", accountNumber);
+        		drawLoginSuccess(req, out);
+        	}
+        	else
+        		drawLoginFailOnName(req,out);
         }
         catch (Exception e) {
         	e.printStackTrace();
