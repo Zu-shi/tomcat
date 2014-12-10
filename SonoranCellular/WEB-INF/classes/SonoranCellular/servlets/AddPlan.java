@@ -17,6 +17,7 @@ public class AddPlan extends HttpServlet
     private OracleConnect oc = new OracleConnect();
     private Statement s;
     private Connection c;
+    private ArrayList<String> plans;
     
     /**
      * Connect to the database and setup instance variables.
@@ -139,7 +140,11 @@ public class AddPlan extends HttpServlet
         out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
         out.println("<p>");
         out.println("<b>Plan Name:</b>");
-        out.println("<input type=text name=\"planname\">");
+        out.println("<select name=\"planname\">");
+        for(String s: plans){
+            out.println("<option value = \"" + s + "\">" + s + "</option>");
+        }
+        out.println("</select>");
         out.println("<br>");
         out.println("</p>");
         
@@ -194,8 +199,6 @@ public class AddPlan extends HttpServlet
         drawHeader(req,out);
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b>Error: no matching phone found on record.</b></br>");
-        
-        out.println("<br>");
         drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
@@ -204,8 +207,6 @@ public class AddPlan extends HttpServlet
         drawHeader(req,out);
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b>Error: the indicated phone already has a subscription.</b></br>");
-        
-        out.println("<br>");
         drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
@@ -215,9 +216,23 @@ public class AddPlan extends HttpServlet
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b> " + err + "</b></br>");
         
-        out.println("<br>");
         drawAddPlanPage(req,out);
         drawFooter(req,out);
+    }
+    
+    private void initializePlanList(){
+        ResultSet rs;
+        String query;
+        plans = new ArrayList<String>();
+        try{
+            query = "SELECT * FROM Plan";
+            rs = s.executeQuery(query);
+            while(rs.next()){
+                plans.add(rs.getString(1));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
@@ -242,8 +257,11 @@ public class AddPlan extends HttpServlet
         
         if(req.getParameter("Submit") == null)
         {
+            initializePlanList();
             drawAddPlanInformationMenu(req, out);
         }else{
+            initializePlanList();
+            
             try{
                 String[] params = req.getParameterValues("planname");
                 String err = InputSanitizer.checkStringAlphanumericAndReturnErrorString("Plan Name",params[0], 1, 40);
@@ -293,7 +311,7 @@ public class AddPlan extends HttpServlet
             }
             
             try{
-                System.out.println("HW8: TEST");
+                //System.out.println("HW8: TEST");
                 ResultSet rs;
                 String query;
                 
