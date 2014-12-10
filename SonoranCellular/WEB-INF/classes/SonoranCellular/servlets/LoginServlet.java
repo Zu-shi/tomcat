@@ -202,7 +202,6 @@ public class LoginServlet extends HttpServlet
         try{
             String[] params = req.getParameterValues("account number");
         	accountNumber = Integer.parseInt(params[0]);
-        	
         } catch (Exception e) {
         	e.printStackTrace();
         }
@@ -210,7 +209,6 @@ public class LoginServlet extends HttpServlet
         try{
             String[] params = req.getParameterValues("account");
             ownerName = params[0];
-        	
         } catch (Exception e) {
         	e.printStackTrace();
         }
