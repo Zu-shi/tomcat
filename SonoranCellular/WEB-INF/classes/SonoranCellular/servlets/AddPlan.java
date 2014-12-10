@@ -248,8 +248,8 @@ public class AddPlan extends HttpServlet
         int accountNumber = 0;
         
         try{
-            System.out.println("HW8: account number: " + (Integer)req.getSession().getAttribute("accountNumber"));
-            accountNumber = (Integer)req.getSession().getAttribute("accountNumber");
+            System.out.println("HW8: account number: " + (Integer)req.getSession().getAttribute("AccountNumber"));
+            accountNumber = (Integer)req.getSession().getAttribute("AccountNumber");
         }catch (Exception e) {
             System.out.println("HW8: account number pasing error.");
             e.printStackTrace();

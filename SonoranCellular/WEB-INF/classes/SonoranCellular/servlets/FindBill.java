@@ -104,7 +104,6 @@ public class FindBill extends HttpServlet
     public void drawGetBill(HttpServletRequest req, PrintWriter out)
     {
         drawHeader(req,out);
-        System.out.println("HW8: in drawGetBill___");
         out.println("<form name=\"billSearch\" action=FindBill method=get>");
         out.println("Enter billing period: ");
         out.println("<input type=text size=30 name=\"billperiod\">");
@@ -118,14 +117,9 @@ public class FindBill extends HttpServlet
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b> " + err + "</b></br>");
         
-        out.println("<hr");
-        out.println("<br><br>");
-        
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        out.println("<form name=\"retry\" action=FindBill>");
+        out.println("<input type=submit name=\"home\" value=\"retry\">");
         out.println("</form>");
-        
-        out.println("<br>");
         drawFooter(req,out);
     }
     
@@ -136,14 +130,11 @@ public class FindBill extends HttpServlet
         out.println("<b>There is no bill for the specified billing period.</b></br>");
         out.println("<b>Please enter another billing period and try again.</b></br>");
         
-        out.println("<hr");
-        out.println("<br><br>");
-        
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        out.println("<form name=\"billSearch\" action=FindBill method=get>");
+        out.println("Enter billing period: ");
+        out.println("<input type=text size=30 name=\"billperiod\">");
+        out.println("<input type=submit name=\"findBill\" value=\"Find\" >");
         out.println("</form>");
-        
-        out.println("<br>");
         drawFooter(req,out);
     }
     
@@ -161,6 +152,11 @@ public class FindBill extends HttpServlet
             }
         }
         
+        out.println("<form name=\"billSearch\" action=FindBill method=get>");
+        out.println("Enter billing period: ");
+        out.println("<input type=text size=30 name=\"billperiod\">");
+        out.println("<input type=submit name=\"findBill\" value=\"Find\" >");
+        out.println("</form>");
         drawFooter(req,out);
     }
     
@@ -175,8 +171,8 @@ public class FindBill extends HttpServlet
         int accountNumber = 0;
 
         try{
-            System.out.println("HW8: account number: " + (Integer)req.getSession().getAttribute("accountNumber"));
-            accountNumber = (Integer)req.getSession().getAttribute("accountNumber");
+            System.out.println("HW8: account number: " + (Integer)req.getSession().getAttribute("AccountNumber"));
+            accountNumber = (Integer)req.getSession().getAttribute("AccountNumber");
         }catch (Exception e) {
             System.out.println("HW8: account number pasing error.");
             e.printStackTrace();
