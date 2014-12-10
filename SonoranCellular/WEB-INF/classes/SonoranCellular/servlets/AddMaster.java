@@ -17,7 +17,7 @@ public class AddMaster extends HttpServlet
     private OracleConnect oc = new OracleConnect();
     private Statement s;
     private Connection c;
-    private ArrayList<String> plans;
+    private String owner;
     
     /**
      * Connect to the database and setup instance variables.
@@ -54,33 +54,10 @@ public class AddMaster extends HttpServlet
     	}
     }
     
-    public void drawUpdateMessage(HttpServletRequest req, PrintWriter out, String plan_name, int accountNumber, int imei, String model)
-    {
-        drawHeader(req,out);
-        out.println("<p><b>Plan Name:</b>  " + plan_name + "</p>");
-        out.println("<p><b>Mobile Number:</b>  " + accountNumber + "</p>");
-        out.println("<p><b>IMEI:</b>  " + imei + "</p>");
-        out.println("<p><b>Model:</b>  " + model + "</p>");
-        
-        out.println("<br>");
-        
-        out.println("<form name=\"MainMenu\" action=LoginServlet>");
-        out.println("<input type=submit name=\"MainMenu\" value=\"MainMenu\">");
-        out.println("</form>");
-        
-        out.println("<br>");
-        
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
-        out.println("</form>");
-        drawFooter(req,out);
-    }
-    
-    
     public void drawHeader(HttpServletRequest req, PrintWriter out) {
         out.println("<html>");
         out.println("<head>");
-        out.println("<title>Plan Addition</title>");
+        out.println("<title>Set Master Account</title>");
         out.println("</head>");
         
         out.println("<body>");
@@ -96,6 +73,12 @@ public class AddMaster extends HttpServlet
         out.println("<hr>");
     }
     
+    public void drawAlreadyDependent(HttpServletRequest req, PrintWriter out){
+        drawHeader(req,out);
+        out.println("<font size=5 face=\"Arial,Helvetica\">");
+        out.println("<b>Error: this account is already dependent on account "+ owner +".</b></br>");
+        drawFooter(req,out);
+    }
     
     public void drawFooter(HttpServletRequest req, PrintWriter out)
     {
@@ -127,93 +110,58 @@ public class AddMaster extends HttpServlet
         out.println("</html>");
     }
     
-    
-    public void drawAddPlanInformationMenu(HttpServletRequest req, PrintWriter out)
-    {
-        drawHeader(req,out);
-        drawAddPlanPage(req,out);
-        drawFooter(req,out);
-    }
-    
-    public void drawAddPlanPage(HttpServletRequest req, PrintWriter out){
+    public void drawAddMasterPage(HttpServletRequest req, PrintWriter out){
+        out.println("<form name=\"AddMaster\" action=AddMaster method=get>");
+        out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
         
-        if(!plans.isEmpty()){
-            out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
-            out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
-            out.println("<p>");
-            out.println("<b>Plan Name:</b>");
-            out.println("<select name=\"planname\">");
-            for(String s: plans){
-                out.println("<option value = \"" + s + "\">" + s + "</option>");
-            }
-            out.println("</select>");
-            out.println("<br>");
-            out.println("</p>");
-            
-            out.println("<p>");
-            out.println("<b>IMEI: </b>");
-            out.println("<input type=text name=\"imei\">");
-            out.println("<br>");
-            out.println("</p>");
-            
-            out.println("<p>");
-            out.println("<b>Mobile Number: </b>");
-            out.println("<input type=text name=\"mobilenumber\">");
-            out.println("<br>");
-            out.println("</p>");
-            
-            out.println("<p>");
-            out.println("<b>Model: </b>");
-            out.println("<input type=text name=\"model\">");
-            out.println("<br>");
-            out.println("</p>");
-            
-            out.println("<table>");
-            out.println("<tr>");
-            out.println("<td>");
-            out.println("<input type=submit name=\"Submit\" value=\"Insert\">&nbsp&nbsp");
-            out.println("</td>");
-            out.println("</tr>");
-            
-            out.println("</form>");
-            
-            out.println("<tr>");
-            out.println("<td>");
-            out.println("<form name=\"Cancel\" action=AddPlan method=get>");
-            out.println("<input type=submit name=\"Cancel\" value=\"Cancel\">&nbsp&nbsp");
-            out.println("</form>");
-            out.println("</td>");
-            out.println("</tr>");
-        }else{
-            out.println("<font size=5 face=\"Arial,Helvetica\">");
-            out.println("<b>There are no availible plans at the moment, please contact your Database Administrator.</b></br>");
-        }
-    }
-    
-    public void drawCannotFindPlan(HttpServletRequest req, PrintWriter out){
-        drawHeader(req,out);
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: cannot find corresponding plan.</b></br>");
-        
+        out.println("<p>");
+        out.println("<b>Owner Account Number: </b>");
+        out.println("<input type=text name=\"owneraccountnumber\">");
         out.println("<br>");
-        drawAddPlanPage(req,out);
+        out.println("</p>");
+        
+        out.println("<p>");
+        out.println("<b>Owner Name: </b>");
+        out.println("<input type=text name=\"ownername\">");
+        out.println("<br>");
+        out.println("</p>");
+        
+        out.println("<table>");
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<input type=submit name=\"Submit\" value=\"Insert\">&nbsp&nbsp");
+        out.println("</td>");
+        out.println("</tr>");
+        
+        out.println("</form>");
+        
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<form name=\"Cancel\" action=AddMaster method=get>");
+        out.println("<input type=submit name=\"Cancel\" value=\"Cancel\">&nbsp&nbsp");
+        out.println("</form>");
+        out.println("</td>");
+        out.println("</tr>");
+    }
+    
+    public void drawMainForm(HttpServletRequest req, PrintWriter out){
+        drawHeader(req,out);
+        drawAddMasterPage(req,out);
         drawFooter(req,out);
     }
     
-    public void drawCannotFindPhone(HttpServletRequest req, PrintWriter out){
-        drawHeader(req,out);
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: no matching phone found on record.</b></br>");
-        drawAddPlanPage(req,out);
-        drawFooter(req,out);
-    }
-    
-    public void drawPhoneAlreadySubscribed(HttpServletRequest req, PrintWriter out){
-        drawHeader(req,out);
-        out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: the indicated phone already has a subscription.</b></br>");
-        drawAddPlanPage(req,out);
-        drawFooter(req,out);
+    private boolean checkNotDependent(int accountNumber){
+        ResultSet rs;
+        String query;
+        try{
+            query = "SELECT * FROM Owns WHERE DependentAccountNumber = " + accountNumber;
+            rs = s.executeQuery(query);
+            if(rs.next()){owner = rs.getString(1); return false;}
+            else{return true;}
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public void drawParseError(HttpServletRequest req, PrintWriter out, String err){
@@ -221,23 +169,28 @@ public class AddMaster extends HttpServlet
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b> " + err + "</b></br>");
         
-        drawAddPlanPage(req,out);
+        drawAddMasterPage(req,out);
         drawFooter(req,out);
     }
     
-    private void initializePlanList(){
-        ResultSet rs;
-        String query;
-        plans = new ArrayList<String>();
-        try{
-            query = "SELECT * FROM Plan";
-            rs = s.executeQuery(query);
-            while(rs.next()){
-                plans.add(rs.getString(1));
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    public void drawUpdateMessage(HttpServletRequest req, PrintWriter out, int ownerAccountNumber, int accountNumber)
+    {
+        drawHeader(req,out);
+        out.println("<p><b>Owner Account Number:</b>  " + ownerAccountNumber + "</p>");
+        out.println("<p><b>Account Number:</b>  " + accountNumber + "</p>");
+        
+        out.println("<br>");
+        
+        out.println("<form name=\"MainMenu\" action=LoginServlet>");
+        out.println("<input type=submit name=\"MainMenu\" value=\"MainMenu\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
+        out.println("</form>");
+        drawFooter(req,out);
     }
     
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
@@ -245,12 +198,10 @@ public class AddMaster extends HttpServlet
         System.out.println("HW8: Doing get for AddPlan.");
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
-        
-        String planName = "";
-        int imei = 0;
-        String mobilenumber = "";
-        String model = "";
+        int ownerAccountNumber = 0;
         int accountNumber = 0;
+        String ownerName = "";
+        
         
         try{
             System.out.println("HW8: account number: " + (Integer)req.getSession().getAttribute("AccountNumber"));
@@ -260,106 +211,70 @@ public class AddMaster extends HttpServlet
             e.printStackTrace();
         }
         
-        if(req.getParameter("Submit") == null)
-        {
-            initializePlanList();
-            drawAddPlanInformationMenu(req, out);
+        if(!checkNotDependent(accountNumber)){
+            drawAlreadyDependent(req, out);
+            return;
         }else{
-            initializePlanList();
-            
-            try{
-                String[] params = req.getParameterValues("planname");
-                String err = InputSanitizer.checkStringAlphanumericAndReturnErrorString("Plan Name",params[0], 1, 40);
-                planName = params[0];
-                if(err != ""){
-                    drawParseError(req, out, err);
-                    return;
+            if(req.getParameter("Submit") == null){drawMainForm(req, out);}
+            else{
+                try{
+                    String[] params = req.getParameterValues("ownername");
+                    String err = InputSanitizer.checkStringAlphaAndReturnErrorString("Owner Name",params[0], 1, 40);
+                    ownerName = params[0];
+                    if(err != ""){
+                        drawParseError(req, out, err);
+                        return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            try{
-                String[] params = req.getParameterValues("imei");
-                String err = InputSanitizer.checkStringNumericAndReturnErrorString("IMEI", params[0], 1, 8);
-                if(err != ""){
-                    drawParseError(req, out, err);
-                    return;
-                }
-                imei = Integer.parseInt(params[0]);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            try{
-                String[] params = req.getParameterValues("mobilenumber");
-                String err = InputSanitizer.checkPhoneNumAndReturnErrorString("Mobile Number", params[0]);
-                mobilenumber = params[0];
-                if(err != ""){
-                    drawParseError(req, out, err);
-                    return;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            try{
-                String[] params = req.getParameterValues("model");
-                String err = InputSanitizer.checkStringAlphanumericAndReturnErrorString("Model" ,params[0], 1, 10);
-                model = params[0];
-                if(err != ""){
-                    drawParseError(req, out, err);
-                    return;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            try{
-                //System.out.println("HW8: TEST");
-                ResultSet rs;
-                String query;
                 
-                //Check plan exists
-                query = "SELECT * FROM Plan WHERE " +
-                "PlanName = \'" + planName + "\'";
-                System.out.println("HW8: " + query);
-                rs = s.executeQuery(query);
+                try{
+                    String[] params = req.getParameterValues("owneraccountnumber");
+                    String err = InputSanitizer.checkStringNumericAndReturnErrorString("Owner Account Number", params[0], 1, 8);
+                    if(err != ""){
+                        drawParseError(req, out, err);
+                        return;
+                    }
+                    ownerAccountNumber = Integer.parseInt(params[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 
-                if(rs.next()){
-                    //Check phone exists
-                    query ="SELECT * FROM Phone WHERE " +
-                    "MobileNumber = \'" + mobilenumber + "\' AND " +
-                    "IMEI = " + imei + " AND " +
-                    "Model = " + "\'" + model + "\'";
+                try{
+                    //System.out.println("HW8: TEST");
+                    ResultSet rs;
+                    String query;
+                
+                    //Check owner exists
+                    query = "SELECT * FROM Account WHERE " +
+                    "Name = \'" + ownerName + "\' AND AccountNumber = " + ownerAccountNumber;
                     System.out.println("HW8: " + query);
                     rs = s.executeQuery(query);
                     
                     if(rs.next()){
-                        //Check subscription does not exist
-                        query = "SELECT * FROM Subscribe WHERE " +
-                        "IMEI = " + imei;
-                        System.out.println("HW8: " + query);
-                        rs = s.executeQuery(query);
                         
+                        query = "SELECT * FROM Owns WHERE" +
+                            " MasterAccountNumber = " + ownerAccountNumber +
+                            " DependentAccountNumber = " + accountNumber;
+                        rs = s.executeQuery(query);
+                            
                         if(!rs.next()){
-                            query = "INSERT INTO Subscribe (IMEI, AccountNumber, PlanName) VALUES(" +    imei + ", " + accountNumber + ", '" + planName + "')";
+                            query = "INSERT INTO Owns VALUES (" + ownerAccountNumber + ", " + accountNumber + ")";
                             System.out.println("HW8: " + query);
                             s.executeUpdate(query);
-                            drawUpdateMessage(req, out, planName, accountNumber, imei, model);
-                            
+                            drawUpdateMessage(req, out, ownerAccountNumber, accountNumber);
                         }else{
-                            drawPhoneAlreadySubscribed(req, out);
-                        }                    }else{
-                            drawCannotFindPhone(req, out);
+                            drawParseError(req, out, "Master account already owns this account.");
                         }
-                }else{
-                    drawCannotFindPlan(req, out);
+                    }else{
+                        drawParseError(req, out, "Master account does not exist.");
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
+
 }
