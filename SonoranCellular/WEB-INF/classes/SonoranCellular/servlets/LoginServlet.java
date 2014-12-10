@@ -77,9 +77,10 @@ public class LoginServlet extends HttpServlet
     }
 
 
-    private void drawActiveOptions(HttpServletRequest req, PrintWriter out)
+    private void drawActiveOptions(HttpServletRequest req, PrintWriter out, int accountNumber)
     {
         out.println("<h2>Main Menu</h2>");
+        out.println("<p>Welcome, user " + accountNumber + ".</p>");
         
     	out.println("<div class=\"menuButton\">");
         out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
@@ -139,10 +140,10 @@ public class LoginServlet extends HttpServlet
         out.println("</form>");
     }
 
-    public void drawLoginSuccess(HttpServletRequest req, PrintWriter out)
+    public void drawLoginSuccess(HttpServletRequest req, PrintWriter out, int accountNumber)
     {
         drawHeader(req,out);
-        drawActiveOptions(req,out);
+        drawActiveOptions(req,out,accountNumber);
         drawFooter(req,out);
     }
 
@@ -167,7 +168,7 @@ public class LoginServlet extends HttpServlet
         
      // Is the user already logged in?
     	if(req.getSession().getAttribute("Username") != null) {
-    		drawLoginSuccess(req, out);
+    		drawLoginSuccess(req, out, (int)req.getSession().getAttribute("AccountNumber"));
     		return;
     	}
     	
@@ -205,7 +206,7 @@ public class LoginServlet extends HttpServlet
         	if(rs.next()) {
         		req.getSession().setAttribute("Username", ownerName);
         		req.getSession().setAttribute("AccountNumber", accountNumber);
-        		drawLoginSuccess(req, out);
+        		drawLoginSuccess(req, out, (int)req.getSession().getAttribute("AccountNumber"));
         	}
         	else
         		drawLoginFailOnName(req,out);
