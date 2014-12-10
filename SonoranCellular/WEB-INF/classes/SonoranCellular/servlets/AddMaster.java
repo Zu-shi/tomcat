@@ -7,9 +7,9 @@ import java.sql.*;
 import SonoranCellular.servlets.*;
 import SonoranCellular.utils.*;
 
-public class AddPlan extends HttpServlet
+public class AddMaster extends HttpServlet
 {
-    public AddPlan()
+    public AddMaster()
     {
         super();
     }
@@ -351,8 +351,8 @@ public class AddPlan extends HttpServlet
                         }else{
                             drawPhoneAlreadySubscribed(req, out);
                         }                    }else{
-                        drawCannotFindPhone(req, out);
-                    }
+                            drawCannotFindPhone(req, out);
+                        }
                 }else{
                     drawCannotFindPlan(req, out);
                 }

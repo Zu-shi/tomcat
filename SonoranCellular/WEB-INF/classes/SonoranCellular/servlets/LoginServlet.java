@@ -106,9 +106,21 @@ public class LoginServlet extends HttpServlet
         out.println("</form>");
 
         out.println("<br>");
-
-        out.println("<form name=\"LogoutServlet\" action=LogoutServlet method=get>");
-        out.println("<input type=submit name=\"LogoutServlet\" value=\"Log out\">");
+        
+        out.println("<form name=\"PlanShare\" action=./JSP/SharedAssignment.jsp>");
+        out.println("<input type=submit name=\"SharedAssignment\" value=\"Who is assigned to the same plan?\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        
+        out.println("<form name=\"AddMaster\" action=AddMaster method=get>");
+        out.println("<input type=submit name=\"AddMaster\" value=\"Set master account for this account.\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        
+        out.println("<form name=\"ViewDependents\" action=ViewDependents method=get>");
+        out.println("<input type=submit name=\"ViewDependents\" value=\"Show list of accounts dependent on this account.\">");
         out.println("</form>");
     }
 
