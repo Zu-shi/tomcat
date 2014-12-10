@@ -31,6 +31,16 @@
 	</servlet>
 
 
+    <servlet>
+        <servlet-name>AddMaster</servlet-name>
+        <servlet-class>SonoranCellular.servlets.AddMaster</servlet-class>
+    </servlet>
+
+
+    <servlet>
+        <servlet-name>ViewDependents</servlet-name>
+        <servlet-class>SonoranCellular.servlets.ViewDependents</servlet-class>
+    </servlet>
 	<!--Map paths for servlets in the application-->
 
 	<servlet-mapping>
@@ -47,14 +57,26 @@
 		<servlet-name>FindBill</servlet-name>
 		<url-pattern>/FindBill</url-pattern>
 	</servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>AddPlan</servlet-name>
         <url-pattern>/AddPlan</url-pattern>
     </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
-    </servlet-mapping> 
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>AddMaster</servlet-name>
+        <url-pattern>/AddMaster</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>ViewDependents</servlet-name>
+        <url-pattern>/ViewDependents</url-pattern>
+    </servlet-mapping>
 
    
 
