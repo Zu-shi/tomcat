@@ -67,7 +67,7 @@ public class AddMaster extends HttpServlet
         out.println("<font color=\"#000066\">");
         out.println("<center>\n<font size=7><strong>SonoranCellular</strong></font></br>");
         out.println("</center>\n<font size=4><hr color=\"#000066\">");
-        out.println("Add new plan </b><br></font>");
+        out.println("Set Master Account </b><br></font>");
         out.println("</font>");
         
         out.println("<hr>");
@@ -93,8 +93,11 @@ public class AddMaster extends HttpServlet
         
         out.println("<tr>");
         out.println("<td>");
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
+    	out.println("<div class=\"menuButton\">");
+        out.println("<form class=\"toBottom\"name=\"LogoutServlet\" action=LogoutServlet method=get>");
+        out.println("<input type=submit name=\"LogoutServlet\" value=\"Log out\">");
+        out.println("</form>");
+        out.println("</div>");
         
         out.println("</form>");
         out.println("</p>");
@@ -180,16 +183,6 @@ public class AddMaster extends HttpServlet
         out.println("<p><b>Account Number:</b>  " + accountNumber + "</p>");
         
         out.println("<br>");
-        
-        out.println("<form name=\"MainMenu\" action=LoginServlet>");
-        out.println("<input type=submit name=\"MainMenu\" value=\"MainMenu\">");
-        out.println("</form>");
-        
-        out.println("<br>");
-        
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
-        out.println("</form>");
         drawFooter(req,out);
     }
     
@@ -256,7 +249,8 @@ public class AddMaster extends HttpServlet
                         
                         query = "SELECT * FROM Owns WHERE" +
                             " MasterAccountNumber = " + ownerAccountNumber +
-                            " DependentAccountNumber = " + accountNumber;
+                            " AND DependentAccountNumber = " + accountNumber;
+                        System.out.println("HW8: " + query);
                         rs = s.executeQuery(query);
                             
                         if(!rs.next()){
