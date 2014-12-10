@@ -85,6 +85,7 @@ public class LoginServlet extends HttpServlet
 
     private void drawActiveOptions(HttpServletRequest req, PrintWriter out)
     {
+        System.out.println("HW8: drawActiveOptions");
 
         out.println("<br>");
 
@@ -105,9 +106,21 @@ public class LoginServlet extends HttpServlet
         out.println("</form>");
 
         out.println("<br>");
-
-        out.println("<form name=\"LogoutServlet\" action=LogoutServlet method=get>");
-        out.println("<input type=submit name=\"LogoutServlet\" value=\"Log out\">");
+        
+        out.println("<form name=\"PlanShare\" action=./JSP/SharedAssignment.jsp>");
+        out.println("<input type=submit name=\"SharedAssignment\" value=\"Who is assigned to the same plan?\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        
+        out.println("<form name=\"AddMaster\" action=AddMaster method=get>");
+        out.println("<input type=submit name=\"AddMaster\" value=\"Set master account for this account.\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        
+        out.println("<form name=\"ViewDependents\" action=ViewDependents method=get>");
+        out.println("<input type=submit name=\"ViewDependents\" value=\"Show list of accounts dependent on this account.\">");
         out.println("</form>");
     }
 
@@ -131,6 +144,21 @@ public class LoginServlet extends HttpServlet
     {
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b>Error: enter the correct account name.</b></br>");
+
+        out.println("<hr");
+        out.println("<br><br>");
+
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        out.println("</form>");
+
+        out.println("<br>");
+    }
+
+    private void drawFailOptions(HttpServletRequest req, PrintWriter out)
+    {
+        out.println("<font size=5 face=\"Arial,Helvetica\">");
+        out.println("<b>Error: account number does not exist.</b></br>");
 
         out.println("<hr");
         out.println("<br><br>");
@@ -168,19 +196,12 @@ public class LoginServlet extends HttpServlet
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
         
-     // Is the user already logged in?
-    	if(req.getSession().getAttribute("Username") != null) {
-    		drawLoginSuccess(req, out);
-    		return;
-    	}
-    	
         int accountNumber = 0;
         String ownerName = "";
 
         try{
             String[] params = req.getParameterValues("account number");
         	accountNumber = Integer.parseInt(params[0]);
-        	
         } catch (Exception e) {
         	e.printStackTrace();
         }
@@ -188,12 +209,17 @@ public class LoginServlet extends HttpServlet
         try{
             String[] params = req.getParameterValues("account");
             ownerName = params[0];
-        	
         } catch (Exception e) {
         	e.printStackTrace();
         }
         
         try{
+        	// Is the user already logged in?
+        	if(req.getSession().getAttribute("Username") != null) {
+        		drawLoginSuccess(req, out);
+        		return;
+        	}
+        	
         	ResultSet rs = s.executeQuery("SELECT * FROM Account WHERE " +
         			"AccountNumber = " + accountNumber);
         	if(!rs.next()) {
@@ -216,6 +242,9 @@ public class LoginServlet extends HttpServlet
         catch (Exception e) {
         	e.printStackTrace();
         }
+
+        //if fail, call the following function
+        //drawLoginFail(req,out);
     }
 }
 
