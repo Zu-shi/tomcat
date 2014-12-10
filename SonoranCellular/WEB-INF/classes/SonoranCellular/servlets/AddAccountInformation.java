@@ -184,68 +184,45 @@ public class AddAccountInformation extends HttpServlet
 
 
    public void drawHeader(HttpServletRequest req, PrintWriter out) {
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<title>Account Addition</title>");
-      out.println("</head>");
-
-      out.println("<body>");
-      out.println("<p>");
-      out.println("<center>");
-      out.println("<font size=7 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
-      out.println("<center>\n<strong>SonoranCellular</strong></br></font>");
-      out.println("</center>\n<hr color=\"#000066\">");
-      out.println("Add new account </b><br></font>");
-
-      out.println("<hr>");
+	   out.println("<html>");
+	   out.println("<head>");
+	   out.println("<title>Sonoran Cellular -- Add Account</title>");
+	   out.println("<link href=\"layout.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">");
+	   out.println("</head>");
+	   out.println("<body>");
+	   out.println("<div id=\"wrapper\">");
+	   out.println("<h1>Sonoran Cellular</h1>");
+	   out.println("<hr>");
    }
 
 
    public void drawFooter(HttpServletRequest req, PrintWriter out)
    {
-      out.println("</center>");
-      out.println("</p>");
-      out.println("</body>");
-      out.println("</html>");
+	   out.println("</div>");
+	   out.println("</body>");
+	   out.println("</html>");
    }
 
 
    public void drawAddAccountInformationMenu(HttpServletRequest req, PrintWriter out)
    {
+	  out.println("<div id=\"loginContainer\">");
       out.println("<form name=\"AddAccountInformation\" action=AddAccountInformation method=get>");
-      out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
 
-      out.println("<p>");
-      out.println("<b>Account Name: </b>");
+      out.println("<label>Account Name: </label>");
       out.println("<input type=text name=\"accountname\">");
-      out.println("<br>");
-      out.println("</p>");
-
-      out.println("<p>");
-      out.println("<b>Account Number: </b>");
+      
+      out.println("<label>Account Number: </label>");
       out.println("<input type=text name=\"accountnum\">");
-      out.println("<br>");
-      out.println("</p>");
-
-      out.println("<table>");
-      out.println("<tr>");
-      out.println("<td>");
+      
       out.println("<input type=submit name=\"Submit\" value=\"Insert\">&nbsp&nbsp");
-      out.println("</td>");
-      out.println("</tr>");
 
       out.println("</form>");
-
-      out.println("<tr>");
-      out.println("<td>");
+      
       out.println("<form name=\"Cancel\" action=index.html method=get>");
       out.println("<input type=submit name=\"Cancel\" value=\"Cancel\">&nbsp&nbsp");
       out.println("</form>");
-      out.println("</td>");
-      out.println("</tr>");
-
-      out.println("</table>");
-      out.println("<br><br><br>");
+      out.println("</div>");
    }
 
 
