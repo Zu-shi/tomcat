@@ -85,6 +85,7 @@ public class LoginServlet extends HttpServlet
 
     private void drawActiveOptions(HttpServletRequest req, PrintWriter out)
     {
+        System.out.println("HW8: drawActiveOptions");
 
         out.println("<br>");
 
@@ -142,6 +143,21 @@ public class LoginServlet extends HttpServlet
         out.println("<br>");
     }
 
+    private void drawFailOptions(HttpServletRequest req, PrintWriter out)
+    {
+        out.println("<font size=5 face=\"Arial,Helvetica\">");
+        out.println("<b>Error: account number does not exist.</b></br>");
+
+        out.println("<hr");
+        out.println("<br><br>");
+
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        out.println("</form>");
+
+        out.println("<br>");
+    }
+
     public void drawLoginSuccess(HttpServletRequest req, PrintWriter out)
     {
         drawHeader(req,out);
@@ -149,17 +165,11 @@ public class LoginServlet extends HttpServlet
         drawFooter(req,out);
     }
 
-    public void drawLoginFailOnNumber(HttpServletRequest req, PrintWriter out)
+    public void drawLoginFail(HttpServletRequest req, PrintWriter out)
     {
         drawHeader(req,out);
-        drawFailOptionsNoAccountNumber(req,out);
+        drawFailOptions(req,out);
         drawFooter(req,out);
-    }
-    
-    public void drawLoginFailOnName(HttpServletRequest req, PrintWriter out) {
-    	drawHeader(req,out);
-    	drawFailOptionsIncorrectAccountName(req,out);
-    	drawFooter(req,out);
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
@@ -188,23 +198,27 @@ public class LoginServlet extends HttpServlet
         }
         
         try{
-        	ResultSet rs = s.executeQuery("SELECT * FROM Account WHERE " +
-        			"AccountNumber = " + accountNumber);
-        	if(!rs.next())
-        		drawLoginFailOnNumber(req, out);
-        	
-        	rs = s.executeQuery("SELECT * FROM Account WHERE " +
-        			"AccountNumber = " + accountNumber + " AND " +
-        			"Name = \'" + ownerName + "\'");
-        	
-        	if(rs.next())
+            String query = "SELECT * FROM Account WHERE " +
+                "Name = \'" + ownerName + "\' AND " +
+                "AccountNumber = " + accountNumber;
+            System.out.println("HW8: " + query);
+        	ResultSet rs = s.executeQuery(query);
+            
+            req.getSession().setAttribute("accountNumber", accountNumber);
+        	if(rs.next()){
         		drawLoginSuccess(req, out);
-        	else
-        		drawLoginFailOnName(req,out);
+                System.out.println("HW8: drawLoginSuccess");
+        	}else{
+        		drawLoginFail(req, out);
+                System.out.println("HW8: drawLoginFail");
+            }
         }
         catch (Exception e) {
         	e.printStackTrace();
         }
+
+        //if fail, call the following function
+        //drawLoginFail(req,out);
     }
 }
 

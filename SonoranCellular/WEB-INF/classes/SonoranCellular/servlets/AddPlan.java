@@ -1,13 +1,11 @@
 package SonoranCellular.servlets;
 import java.util.*;
-
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import SonoranCellular.servlets.*;
 import SonoranCellular.utils.*;
-
 
 public class AddPlan extends HttpServlet
 {
@@ -205,10 +203,26 @@ public class AddPlan extends HttpServlet
         drawFooter(req,out);
     }
     
-    public void drawSubscriptionAlreadyExists(HttpServletRequest req, PrintWriter out){
+    public void drawPhoneAlreadySubscribed(HttpServletRequest req, PrintWriter out){
         drawHeader(req,out);
         out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: subscription already exists.</b></br>");
+        out.println("<b>Error: the indicated phone already has a subscription.</b></br>");
+        
+        out.println("<hr");
+        out.println("<br><br>");
+        
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        out.println("</form>");
+        
+        out.println("<br>");
+        drawFooter(req,out);
+    }
+    
+    public void drawParseError(HttpServletRequest req, PrintWriter out, String err){
+        drawHeader(req,out);
+        out.println("<font size=5 face=\"Arial,Helvetica\">");
+        out.println("<b> " + err + "</b></br>");
         
         out.println("<hr");
         out.println("<br><br>");
@@ -247,13 +261,23 @@ public class AddPlan extends HttpServlet
         }else{
             try{
                 String[] params = req.getParameterValues("planname");
+                String err = InputSanitizer.checkStringAlphanumericAndReturnErrorString("Plan Name",params[0], 1, 40);
                 planName = params[0];
+                if(err != ""){
+                    drawParseError(req, out, err);
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             
             try{
                 String[] params = req.getParameterValues("imei");
+                String err = InputSanitizer.checkStringNumericAndReturnErrorString("IMEI", params[0], 1, 8);
+                if(err != ""){
+                    drawParseError(req, out, err);
+                    return;
+                }
                 imei = Integer.parseInt(params[0]);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -261,25 +285,36 @@ public class AddPlan extends HttpServlet
             
             try{
                 String[] params = req.getParameterValues("mobilenumber");
+                String err = InputSanitizer.checkPhoneNumAndReturnErrorString("Mobile Number", params[0]);
                 mobilenumber = params[0];
+                if(err != ""){
+                    drawParseError(req, out, err);
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             
             try{
-                String[] params = req.getParameterValues("account");
+                String[] params = req.getParameterValues("model");
+                String err = InputSanitizer.checkStringAlphanumericAndReturnErrorString("Model" ,params[0], 1, 10);
                 model = params[0];
+                if(err != ""){
+                    drawParseError(req, out, err);
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             
             try{
+                System.out.println("HW8: TEST");
                 ResultSet rs;
                 String query;
                 
                 //Check plan exists
                 query = "SELECT * FROM Plan WHERE " +
-                "PlanName = \'" + planName;
+                "PlanName = \'" + planName + "\'";
                 System.out.println("HW8: " + query);
                 rs = s.executeQuery(query);
                 
@@ -288,17 +323,14 @@ public class AddPlan extends HttpServlet
                     query ="SELECT * FROM Phone WHERE " +
                     "MobileNumber = \'" + mobilenumber + "\' AND " +
                     "IMEI = " + imei + " AND " +
-                    "Model = " + model;
+                    "Model = " + "\'" + model + "\'";
                     System.out.println("HW8: " + query);
                     rs = s.executeQuery(query);
                     
                     if(rs.next()){
                         //Check subscription does not exist
-                        query = "SELECT * FROM Subscription WHERE " +
-                        "MobileNumber = \'" + mobilenumber + "\' AND " +
-                        "IMEI = " + imei + " AND " +
-                        "Model = " + model + " AND " +
-                        "AccountNumber = " + accountNumber;
+                        query = "SELECT * FROM Subscribe WHERE " +
+                        "IMEI = " + imei;
                         System.out.println("HW8: " + query);
                         rs = s.executeQuery(query);
                         
@@ -309,10 +341,8 @@ public class AddPlan extends HttpServlet
                             drawUpdateMessage(req, out, planName, accountNumber, imei, model);
                             
                         }else{
-                            drawSubscriptionAlreadyExists(req, out);
-                        }
-                        
-                    }else{
+                            drawPhoneAlreadySubscribed(req, out);
+                        }                    }else{
                         drawCannotFindPhone(req, out);
                     }
                 }else{
