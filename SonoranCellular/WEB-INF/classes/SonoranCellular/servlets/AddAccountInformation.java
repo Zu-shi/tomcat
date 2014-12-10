@@ -93,8 +93,10 @@ public class AddAccountInformation extends HttpServlet
 		   		+ "AccountNumber = " + accountnum);
 		   if(rs.next())
 			   drawUpdateFailOnNumberExists(out, accountnum);
-		   else
+		   else {
+			   s.executeQuery("INSERT INTO Account VALUES(" + accountnum + ", \'" + accountname + "\')");
 			   drawUpdateMessage(accountname, accountnum, out);
+		   }
 		   
 		   return;
 	   } catch (Exception e) {
