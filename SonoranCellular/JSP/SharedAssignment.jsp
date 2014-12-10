@@ -79,11 +79,11 @@
 	</div>
 	
 	<hr>
-	<form name="mainmenu" action=../LoginServlet method=get>
+	<form class="menuButton" name="mainmenu" action=../LoginServlet method=get>
 		<input type=submit name="MainMenu" value="Main Menu">
 	</form>
 	
-	<form name="logout" action=../LogoutServlet method=get>
+	<form class="menuButton" name="logout" action=../LogoutServlet method=get>
 		<input type=submit name="logoutSonoranCellular" value="Logout">
 	</form>
 
