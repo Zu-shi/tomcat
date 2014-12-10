@@ -57,6 +57,7 @@ public class AddMaster extends HttpServlet
     public void drawHeader(HttpServletRequest req, PrintWriter out) {
         out.println("<html>");
         out.println("<head>");
+    	out.println("<link href=\"layout.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">");
         out.println("<title>Set Master Account</title>");
         out.println("</head>");
         
@@ -76,7 +77,7 @@ public class AddMaster extends HttpServlet
     public void drawAlreadyDependent(HttpServletRequest req, PrintWriter out){
         drawHeader(req,out);
         out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: this account is already dependent on account "+ owner +".</b></br>");
+        out.println("<h2>Error: this account is already dependent on account "+ owner +".</h2></br>");
         drawFooter(req,out);
     }
     
@@ -85,9 +86,11 @@ public class AddMaster extends HttpServlet
         //out.println("<hr>");
         out.println("<tr>");
         out.println("<td>");
+    	out.println("<div class=\"menuButton\">");
         out.println("<form name=\"MainMenu\" action=LoginServlet>");
         out.println("<input type=submit name=\"MainMenu\" value=\"Return to Main Menu\">");
         out.println("</form>");
+        out.println("</div>");
         out.println("</td>");
         out.println("</tr>");
         
@@ -170,7 +173,7 @@ public class AddMaster extends HttpServlet
     public void drawParseError(HttpServletRequest req, PrintWriter out, String err){
         drawHeader(req,out);
         out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b> " + err + "</b></br>");
+        out.println("<h2> " + err + "</h2></br>");
         
         drawAddMasterPage(req,out);
         drawFooter(req,out);

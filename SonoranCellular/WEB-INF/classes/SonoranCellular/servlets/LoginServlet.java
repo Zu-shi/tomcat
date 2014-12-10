@@ -80,7 +80,7 @@ public class LoginServlet extends HttpServlet
     private void drawActiveOptions(HttpServletRequest req, PrintWriter out, int accountNumber)
     {
         out.println("<h2>Main Menu</h2>");
-        out.println("<p>Welcome, user " + accountNumber + ".</p>");
+        //out.println("<p>Welcome, user " + accountNumber + ".</p>");
         
     	out.println("<div class=\"menuButton\">");
         out.println("<form name=\"AddPlan\" action=AddPlan method=get>");

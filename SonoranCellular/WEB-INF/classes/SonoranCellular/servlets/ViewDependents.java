@@ -57,6 +57,7 @@ public class ViewDependents extends HttpServlet
     public void drawHeader(HttpServletRequest req, PrintWriter out) {
         out.println("<html>");
         out.println("<head>");
+    	out.println("<link href=\"layout.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">");
         out.println("<title>View Dependents</title>");
         out.println("</head>");
         
@@ -79,16 +80,20 @@ public class ViewDependents extends HttpServlet
         //out.println("<hr>");
         out.println("<tr>");
         out.println("<td>");
+    	out.println("<div class=\"menuButton\">");
         out.println("<form name=\"MainMenu\" action=LoginServlet>");
         out.println("<input type=submit name=\"MainMenu\" value=\"Return to Main Menu\">");
         out.println("</form>");
+        out.println("</div>");
         out.println("</td>");
         out.println("</tr>");
         
         out.println("<tr>");
         out.println("<td>");
+    	out.println("<div class=\"menuButton\">");
         out.println("<form name=\"logout\" action=index.html>");
         out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
+        out.println("</div>");
         
         out.println("</form>");
         out.println("</p>");
@@ -108,7 +113,7 @@ public class ViewDependents extends HttpServlet
         drawHeader(req,out);
         if(dependents.isEmpty()){
             out.println("<font size=5 face=\"Arial,Helvetica\">");
-            out.println("<b>There are no accounts dependent on this account.</b></br>");
+            out.println("<h2>There are no accounts dependent on this account.</h2></br>");
         }else{
             out.println("<table border=\"1\">");
             out.println("<tr>");
