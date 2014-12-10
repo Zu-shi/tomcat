@@ -98,6 +98,28 @@ public class AddPlan extends HttpServlet
     
     public void drawFooter(HttpServletRequest req, PrintWriter out)
     {
+        //out.println("<hr>");
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<form name=\"MainMenu\" action=LoginServlet>");
+        out.println("<input type=submit name=\"MainMenu\" value=\"Return to Main Menu\">");
+        out.println("</form>");
+        out.println("</td>");
+        out.println("</tr>");
+        
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
+        
+        out.println("</form>");
+        out.println("</p>");
+        out.println("</td>");
+        out.println("</tr>");
+        
+        out.println("</table>");
+        out.println("<br><br><br>");
+        
         out.println("</center>");
         out.println("</p>");
         out.println("</body>");
@@ -107,6 +129,12 @@ public class AddPlan extends HttpServlet
     
     public void drawAddPlanInformationMenu(HttpServletRequest req, PrintWriter out)
     {
+        drawHeader(req,out);
+        drawAddPlanPage(req,out);
+        drawFooter(req,out);
+    }
+    
+    public void drawAddPlanPage(HttpServletRequest req, PrintWriter out){
         out.println("<form name=\"AddPlan\" action=AddPlan method=get>");
         out.println("<font size=3 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
         out.println("<p>");
@@ -150,25 +178,6 @@ public class AddPlan extends HttpServlet
         out.println("</td>");
         out.println("</tr>");
         
-        out.println("<tr>");
-        out.println("<td>");
-        out.println("<form name=\"MainMenu\" action=LoginServlet>");
-        out.println("<input type=submit name=\"MainMenu\" value=\"Return to Main Menu\">");
-        out.println("</form>");
-        out.println("</td>");
-        out.println("</tr>");
-        
-        out.println("<tr>");
-        out.println("<td>");
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
-        out.println("</form>");
-        out.println("</p>");
-        out.println("</td>");
-        out.println("</tr>");
-        
-        out.println("</table>");
-        out.println("<br><br><br>");
     }
     
     public void drawCannotFindPlan(HttpServletRequest req, PrintWriter out){
@@ -176,14 +185,8 @@ public class AddPlan extends HttpServlet
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b>Error: cannot find corresponding plan.</b></br>");
         
-        out.println("<hr");
-        out.println("<br><br>");
-        
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
-        out.println("</form>");
-        
         out.println("<br>");
+        drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
     
@@ -192,14 +195,8 @@ public class AddPlan extends HttpServlet
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b>Error: no matching phone found on record.</b></br>");
         
-        out.println("<hr");
-        out.println("<br><br>");
-        
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
-        out.println("</form>");
-        
         out.println("<br>");
+        drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
     
@@ -208,14 +205,8 @@ public class AddPlan extends HttpServlet
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b>Error: the indicated phone already has a subscription.</b></br>");
         
-        out.println("<hr");
-        out.println("<br><br>");
-        
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
-        out.println("</form>");
-        
         out.println("<br>");
+        drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
     
@@ -224,14 +215,8 @@ public class AddPlan extends HttpServlet
         out.println("<font size=5 face=\"Arial,Helvetica\">");
         out.println("<b> " + err + "</b></br>");
         
-        out.println("<hr");
-        out.println("<br><br>");
-        
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
-        out.println("</form>");
-        
         out.println("<br>");
+        drawAddPlanPage(req,out);
         drawFooter(req,out);
     }
     
