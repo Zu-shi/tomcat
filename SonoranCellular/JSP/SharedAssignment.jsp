@@ -118,7 +118,7 @@
 			</tr>
 			<tr>
 				<td>
-					<form name="logout" action=../index.html>
+					<form name="logout" action=../LogoutServlet method=get>
 						<input type=submit name="logoutSonoranCellular" value="Logout">
 					</form>
 				</td>

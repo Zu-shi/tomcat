@@ -106,8 +106,8 @@ public class LoginServlet extends HttpServlet
 
         out.println("<br>");
 
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Log out\">");
+        out.println("<form name=\"LogoutServlet\" action=FindBill method=get>");
+        out.println("<input type=submit name=\"LogoutServlet\" value=\"Log out\">");
         out.println("</form>");
     }
 
@@ -188,17 +188,28 @@ public class LoginServlet extends HttpServlet
         }
         
         try{
+        	// Is the user already logged in?
+        	if(req.getSession().getAttribute("Username") != null) {
+        		drawLoginSuccess(req, out);
+        		return;
+        	}
+        	
         	ResultSet rs = s.executeQuery("SELECT * FROM Account WHERE " +
         			"AccountNumber = " + accountNumber);
-        	if(!rs.next())
+        	if(!rs.next()) {
         		drawLoginFailOnNumber(req, out);
+        		return;
+        	}
         	
         	rs = s.executeQuery("SELECT * FROM Account WHERE " +
         			"AccountNumber = " + accountNumber + " AND " +
         			"Name = \'" + ownerName + "\'");
         	
-        	if(rs.next())
+        	if(rs.next()) {
+        		req.getSession().setAttribute("Username", ownerName);
+        		req.getSession().setAttribute("AccountNumber", accountNumber);
         		drawLoginSuccess(req, out);
+        	}
         	else
         		drawLoginFailOnName(req,out);
         }

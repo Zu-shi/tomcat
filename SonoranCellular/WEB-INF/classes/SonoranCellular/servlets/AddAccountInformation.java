@@ -26,7 +26,7 @@ public class AddAccountInformation extends HttpServlet
     * Connect to the database and setup instance variables.
     */
    public void init() {
-   	String user_name = OracleConnect.user_name;
+   		String user_name = OracleConnect.user_name;
 		String password = OracleConnect.password;
 		String connect_string = OracleConnect.connect_string;
 		
@@ -164,7 +164,7 @@ public class AddAccountInformation extends HttpServlet
 
       out.println("<br>");
 
-      out.println("<form name=\"logout\" action=index.html>");
+      out.println("<form name=\"logout\" action=LogoutServlet method=get>");
       out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
       out.println("</form>");
    }
