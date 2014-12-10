@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 import java.sql.*;
 
 import SonoranCellular.servlets.*;
+import SonoranCellular.utils.InputSanitizer;
 import SonoranCellular.utils.OracleConnect;
 
 
@@ -65,6 +66,9 @@ public class AddAccountInformation extends HttpServlet
 		   accountname = req.getParameterValues("accountname")[0];
 		   if(accountname == null || accountname.length() == 0)
 			   throw new Exception("No account name supplied.");
+		   
+		   if(!InputSanitizer.checkStringAlpha(accountname, 1, 40))
+			   throw new Exception("Insane name entered.");
 	   }
 	   catch (Exception e) {
 		   drawUpdateFailOnName(out);
@@ -72,7 +76,12 @@ public class AddAccountInformation extends HttpServlet
 	   }
 	   
 	   try{
-		   accountnum = Integer.parseInt(req.getParameterValues("accountnum")[0]);
+		   String input = req.getParameterValues("accountnum")[0];
+		   
+		   if(!InputSanitizer.checkStringNumeric(input, 4, 8))
+			   throw new Exception("Insane account number entered.");
+		   
+		   accountnum = Integer.parseInt(input);
 	   }
 	   catch (Exception e) {
 		   drawUpdateFailOnNumber(out);
@@ -139,7 +148,7 @@ public class AddAccountInformation extends HttpServlet
    
    public void drawUpdateFailOnName(PrintWriter out) {
 	   out.println("<font size=5 face=\"Arial,Helvetica\">");
-       out.println("<b>Error: You must enter a name to register.</b></br>");
+       out.println("<b>Error: You must enter a valid name to register.</b></br>");
 
        out.println("<hr");
        out.println("<br><br>");

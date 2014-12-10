@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet
     	String user_name = OracleConnect.user_name;
 		String password = OracleConnect.password;
 		String connect_string = OracleConnect.connect_string;
-
+		
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			c = DriverManager.getConnection(connect_string,user_name,password);
@@ -106,7 +106,7 @@ public class LoginServlet extends HttpServlet
 
         out.println("<br>");
 
-        out.println("<form name=\"LogoutServlet\" action=FindBill method=get>");
+        out.println("<form name=\"LogoutServlet\" action=LogoutServlet method=get>");
         out.println("<input type=submit name=\"LogoutServlet\" value=\"Log out\">");
         out.println("</form>");
     }
