@@ -97,7 +97,7 @@ public class AddPlan extends HttpServlet
         out.println("<input type=submit name=\"MainMenu\" value=\"Return to Main Menu\">");
         out.println("</form>");
         
-        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<form name=\"logout\" action=LogoutServlet>");
         out.println("<input type=submit name=\"logoutSonoranCellular\" value=\"Logout\">");
         
         out.println("</form>");
